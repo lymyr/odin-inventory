@@ -1,6 +1,6 @@
 <% // WHAT IS THIS AMALGAMATION T-T %>
 
-<% if (locals.dataList) { %>
+<% if (locals.dataList.length > 0) { %>
     <table>
         <tr>
             <% Object.keys(dataList[0]).forEach(colName => { %>
@@ -11,8 +11,8 @@
             <tr>
                 <% Object.values(data).forEach(cell => { %>
                     <td>
-                        <% if (Array.isArray(cell)) {
-                            cell.forEach(category => {%>
+                        <% if (Array.isArray(cell)) { %>
+                            <% cell.forEach(category => { %>
                             <div><%= category %></div>
                         <%})} else {%>
                             <%= cell %>
