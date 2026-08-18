@@ -1,0 +1,26 @@
+<% // WHAT IS THIS AMALGAMATION T-T %>
+
+<% if (locals.dataList) { %>
+    <table>
+        <tr>
+            <% Object.keys(dataList[0]).forEach(colName => { %>
+                <th><%= colName %></th>
+            <%})%>
+        </tr>
+        <% dataList.forEach(data => { %>
+            <tr>
+                <% Object.values(data).forEach(cell => { %>
+                    <td>
+                        <% if (Array.isArray(cell)) {
+                            cell.forEach(category => {%>
+                            <div><%= category %></div>
+                        <%})} else {%>
+                            <%= cell %>
+                        <%}%>
+                    </td>
+                <%})%>
+            </tr>
+        <%})%>
+
+    </table>
+<%}%>
