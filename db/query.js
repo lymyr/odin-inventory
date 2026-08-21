@@ -96,3 +96,10 @@ export async function updateInventory(inv_id, item_id, quantity, person_id) {
         WHERE id = $1
     `, [inv_id, item_id, quantity, person_id])
 }
+
+// deletes
+export async function deleteInventory(inv_id) {
+    await pool.query(`
+        DELETE FROM inventory WHERE id = $1
+    `, [inv_id])
+}

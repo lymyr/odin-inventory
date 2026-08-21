@@ -9,7 +9,7 @@
     <%- include('partials/header') %>
     <%- include('partials/sidebar') %>
     <main>
-        <h1><%= type %> <%= title %></h1>
+        <h1><%= title %> <%= type %></h1>
         <form method="POST" action="/inventory/<%= type.toLowerCase() %>">
             <div>
                 <label for="item">Item:</label>

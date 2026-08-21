@@ -8,7 +8,8 @@ import {
     addInventory as queryAdd,
     getInvMatch,
     updateInventory as queryUpdate,
-    getInvMatchById
+    getInvMatchById,
+    deleteInventory as queryDelete
 } from "../db/query.js"
 
 const validateInventory = [
@@ -52,12 +53,12 @@ const validateInventoryExists = () => body('inv_id')
 
 export async function getInventory(req, res) {
     const inventory = await queryAll(); // todo: include DISTINCT per table
-    res.render('index', {title: 'Inventory', type: 'Add', dataList: inventory})
+    res.render('index', {title: 'Inventory', dataList: inventory})
 }
 
 export async function getFormDetails(req, res) {
     const [items, people] = await Promise.all([getItems(), getPeople()])
-    res.render('invenForm', {title: 'Inventory', items: items, people: people})
+    res.render('invenForm', {title: 'Inventory', type:'Add', items: items, people: people})
 }
 
 export const addInventory = [
@@ -96,6 +97,20 @@ export const updateInventory = [
         if (errs.isEmpty()) {
             await queryUpdate(req.body.inv_id, req.body.item_id, req.body.quantity, req.body.person_id)
             res.redirect('/')
+        }
+        else
+            res.send(errs.mapped())
+    }
+]
+
+
+export const deleteInventory = [
+    validateInventoryExists(),
+    async (req, res) => {
+        const errs = validationResult(req)
+        if (errs.isEmpty()) {
+            await queryDelete(req.body.inv_id)
+            return res.redirect('/')
         }
         else
             res.send(errs.mapped())
