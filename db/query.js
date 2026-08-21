@@ -1,5 +1,6 @@
 import pool from "./pool.js";
 
+// gets
 export async function getInventory() {
     const { rows } = await pool.query(`
         SELECT 
@@ -13,7 +14,8 @@ export async function getInventory() {
         INNER JOIN item ON inventory.item_id = item.id
         INNER JOIN item_category ON item_category.item_id = item.id
         INNER JOIN category ON item_category.category_id = category.id
-        GROUP BY inventory.id, item, quantity, owner
+        GROUP BY inventory.id, item, quantity, owner 
+        ORDER BY owner
     `)
     return rows
 }
@@ -32,7 +34,7 @@ export async function getPeople() {
     return rows
 }
 
-export async function getItems() {
+export async function getItemsCategory() {
     const { rows } = await pool.query(`
         SELECT item.id, item.name, item.description, JSON_AGG(category.name) AS category FROM item
         INNER JOIN item_category AS ic ON ic.item_id = item.id
@@ -42,4 +44,37 @@ export async function getItems() {
     return rows
 }
 
-export async function addInventory() {}
+export async function getItems() {
+    const { rows } = await pool.query(`
+        SELECT * FROM item
+    `)
+    return rows
+}
+
+export async function getItem(id) {
+    const { rows } = await pool.query(`
+        SELECT * FROM item WHERE item.id = $1
+    `, [id])
+    return rows
+}
+
+export async function getPerson(id) {
+    const { rows } = await pool.query(`
+        SELECT * FROM person WHERE person.id = $1
+    `, [id])
+    return rows
+}
+
+export async function getInvMatch(item_id, person_id) {
+    const { rows } = await pool.query(`
+        SELECT * FROM inventory WHERE item_id = $1 AND person_id = $2
+    `, [item_id, person_id])
+    return rows
+}
+
+// creates
+export async function addInventory(item_id, quantity, person_id) {
+    await pool.query(`INSERT INTO inventory (item_id, person_id, quantity) 
+        VALUES($1, $2, $3)
+    `, [item_id, quantity, person_id])
+}

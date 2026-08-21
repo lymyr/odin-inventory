@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <%- include('partials/sidebar') %>
+    <main>
+        <h1>Add <%= title %></h1>
+        <form method="POST" action="/inventory/add">
+            <div>
+                <label for="item">Item:</label>
+                <select name="item_id" id="item">
+                    <option value="" selected>Select item</option>
+                    <% if (locals.items) { items.forEach(item => { %>
+                        <option value=<%= item.id %>><%= item.name %></option>
+                    <% })} %>
+                </select>
+                <label for="quantity">Quantity:</label>
+                <input id="quantity" name="quantity">
+                <label for="person">Owner:</label>
+                <select name="person_id" id="person">
+                     <option value="" selected>Select person</option>
+                    <% if (locals.people) { people.forEach(person => { %>
+                        <option value=<%= person.id %>><%= person.name %></option>
+                    <% })} %>
+                </select>
+            </div>
+            <button type="submit">submit</button>
+        </form>
+    </main>
+</body>
+</html>

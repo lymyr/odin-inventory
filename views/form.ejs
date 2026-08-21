@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <%- include('partials/sidebar') %>
+    <main>
+        <h1>Add <%= title %></h1>
+        <form method="POST" action="/<%if (title.toLowerCase() != 'inventory') {%><%= title.toLowerCase() %><%}%>">
+            <div>
+                <% if (title.toLowerCase() != 'inventory') {%>
+                    <label for="name">Name:</label>
+                    <input id="name" for="name">
+                    <label></label>
+                <%}%>
+            </div>
+            <button type="submit">submit</button>
+        </form>
+    </main>
+</body>
+</html>

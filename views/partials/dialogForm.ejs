@@ -1,8 +1,0 @@
-<button command="show-modal", commandfor="form-dialog">Add</button>
-
-<dialog id="form-dialog">
-    <form method="POST" action="/<%if (title.toLowerCase() != 'inventory') {%><%= title.toLowerCase() %><%}%>">
-        <button commandfor='form-dialog' command='close' type="button">close</button>
-        <button type="submit">submit</button>
-    </form>
-</dialog>

@@ -1,5 +1,5 @@
 import { 
-    getItems as queryAll
+    getItemsCategory as queryAll
 } from "../db/query.js"
 
 export async function getItems(req, res) {
