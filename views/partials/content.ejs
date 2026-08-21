@@ -24,7 +24,15 @@
                         <input name='inv_id' value=<%= data.id %> hidden>
                         <button type="button" command="show-modal" commandFor="delete-dialog-<%= data.id %>">delete</button>
                         <dialog id="delete-dialog-<%= data.id %>">
-                            <p>Are you sure you want to delete <%= data.item %> item of <%= data.owner %>?</p>
+                            <% // make this work with other catalogs as well %>
+                            <p>
+                                Are you sure you want to delete 
+                                <% if (title.toLowerCase() == 'inventory') {%>
+                                    <%= data.item %> item of <%= data.owner %>?
+                                <%} else {%>
+                                    <%= data.name %>
+                                <%}%>
+                            </p>
                             <button type="button" commandFor="delete-dialog-<%= data.id %>" command="close">cancel</button>
                             <button type="submit">yes</button>
                         </dialog>
