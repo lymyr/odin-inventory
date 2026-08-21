@@ -72,9 +72,27 @@ export async function getInvMatch(item_id, person_id) {
     return rows
 }
 
+export async function getInvMatchById(inv_id) {
+    const { rows } = await pool.query(`
+        SELECT * FROM inventory WHERE id = $1
+    `, [inv_id])
+    return rows
+}
+
 // creates
 export async function addInventory(item_id, quantity, person_id) {
-    await pool.query(`INSERT INTO inventory (item_id, person_id, quantity) 
+    await pool.query(`INSERT INTO inventory (item_id, quantity, person_id) 
         VALUES($1, $2, $3)
     `, [item_id, quantity, person_id])
+}
+
+// updates
+export async function updateInventory(inv_id, item_id, quantity, person_id) {
+    await pool.query(`
+        UPDATE inventory SET 
+            item_id = $2, 
+            quantity = $3, 
+            person_id = $4
+        WHERE id = $1
+    `, [inv_id, item_id, quantity, person_id])
 }

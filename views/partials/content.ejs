@@ -19,6 +19,16 @@
                         <%}%>
                     </td>
                 <%})%>
+                <td>
+                    <form method="POST" action="/<%= title.toLowerCase() %>/<%= data.id %>">
+                        <input value='delete' hidden>
+                        <a><button>delete</button></a>
+                    </form>
+                    
+                </td>
+                <td>
+                    <a href="/update/<%= data.id %>"><button>update</button></a>
+                </td>
             </tr>
         <%})%>
 

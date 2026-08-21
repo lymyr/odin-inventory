@@ -9,26 +9,43 @@
     <%- include('partials/header') %>
     <%- include('partials/sidebar') %>
     <main>
-        <h1>Add <%= title %></h1>
-        <form method="POST" action="/inventory/add">
+        <h1><%= type %> <%= title %></h1>
+        <form method="POST" action="/inventory/<%= type.toLowerCase() %>">
             <div>
                 <label for="item">Item:</label>
                 <select name="item_id" id="item">
-                    <option value="" selected>Select item</option>
+                    <option value="">Select item</option>
                     <% if (locals.items) { items.forEach(item => { %>
-                        <option value=<%= item.id %>><%= item.name %></option>
+                        <option 
+                            value=<%= item.id %>
+                            <% if (locals.invMatch != undefined && locals.invMatch.item_id == item.id) {%> selected <%}%> 
+                        ><%= item.name %></option>
                     <% })} %>
                 </select>
                 <label for="quantity">Quantity:</label>
-                <input id="quantity" name="quantity">
+                <input 
+                    id="quantity" 
+                    name="quantity"
+                    <%  let quantHolder = (locals.invMatch != undefined) ? invMatch.quantity : 1 %>
+                    value=<%= quantHolder %>
+                >
                 <label for="person">Owner:</label>
                 <select name="person_id" id="person">
-                     <option value="" selected>Select person</option>
+                     <option value="">Select person</option>
                     <% if (locals.people) { people.forEach(person => { %>
-                        <option value=<%= person.id %>><%= person.name %></option>
+                        <% let selectVal = (locals.invMatch != undefined && locals.invMatch.person_id == person.id) ? 'selected' : ''%> 
+                        <option 
+                            value=<%= person.id %> 
+                            <% if (locals.invMatch != undefined && locals.invMatch.person_id== person.id) {%> selected <%}%> >
+                            <%= person.name %>
+                        </option>
                     <% })} %>
                 </select>
             </div>
+
+            <% if (locals.invMatch) {%> 
+                <input hidden name="inv_id" value=<%= invMatch.id %>>
+            <%}%> 
             <button type="submit">submit</button>
         </form>
     </main>
