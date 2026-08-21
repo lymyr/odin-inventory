@@ -41,3 +41,5 @@ export async function getItems() {
     `)
     return rows
 }
+
+export async function addInventory() {}

@@ -4,5 +4,5 @@ import {
 
 export async function getItems(req, res) {
     const items = await queryAll()
-    res.render('index', {title: 'Items', dataList: items})
+    res.render('index', {title: 'Item', dataList: items})
 }

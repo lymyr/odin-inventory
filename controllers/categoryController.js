@@ -6,3 +6,7 @@ export async function getCategories(req, res) {
     const categories = await queryAll()
     res.render('index', {title:'Category', dataList: categories})
 }
+
+export async function addCategory(req, res) {
+    
+}
