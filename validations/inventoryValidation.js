@@ -31,12 +31,12 @@ const validateInventory = [
 
 const validateInventoryDoesntExist = () => body('item_id')
     .custom(async (value, {req, res}) => {
-        const matchingInv = await getInvMatch(value, req.body.person_id, req.body.inv_id)
+        const matchingInv = await getInvMatch(value, req.body.person_id, req.body.id)
         if (matchingInv.length > 0)
             throw new Error('Inventory already exists')
     })
 
-const validateInventoryIdExists = () => body('inv_id')
+const validateInventoryIdExists = () => body('id')
     .isInt().bail().toInt().custom(async (id, {req, res}) => {
         const matchingInv = await getInvMatchById(id)
         if (matchingInv < 1)

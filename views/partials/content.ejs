@@ -21,7 +21,7 @@
                 <%})%>
                 <td>
                     <form method="POST" action="/<%= title.toLowerCase() %>/delete">
-                        <input name='inv_id' value=<%= data.id %> hidden>
+                        <input name='id' value=<%= data.id %> hidden>
                         <button type="button" command="show-modal" commandFor="delete-dialog-<%= data.id %>">delete</button>
                         <dialog id="delete-dialog-<%= data.id %>">
                             <p>

@@ -65,10 +65,10 @@ export async function getPerson(id) {
     return rows
 }
 
-export async function getInvMatch(item_id, person_id, inv_id=null) {
+export async function getInvMatch(item_id, person_id, id=null) {
     const q = async () => {
         let query;
-        if (inv_id === null) {
+        if (id === null) {
             query = await pool.query(`
                 SELECT * FROM inventory WHERE item_id = $1 AND person_id = $2
             `, [item_id, person_id])
@@ -76,17 +76,17 @@ export async function getInvMatch(item_id, person_id, inv_id=null) {
         }
         query = await pool.query(`
             SELECT * FROM inventory WHERE item_id = $1 AND person_id = $2 AND id != $3
-        `, [item_id, person_id, inv_id])
+        `, [item_id, person_id, id])
         return query
     }
     const { rows } = await q()
     return rows
 }
 
-export async function getInvMatchById(inv_id) {
+export async function getInvMatchById(id) {
     const { rows } = await pool.query(`
         SELECT * FROM inventory WHERE id = $1
-    `, [inv_id])
+    `, [id])
     return rows
 }
 
@@ -126,14 +126,14 @@ export async function addCategory(name, description) {
 }
 
 // updates
-export async function updateInventory(inv_id, item_id, quantity, person_id) {
+export async function updateInventory(id, item_id, quantity, person_id) {
     await pool.query(`
         UPDATE inventory SET 
             item_id = $2, 
             quantity = $3, 
             person_id = $4
         WHERE id = $1
-    `, [inv_id, item_id, quantity, person_id])
+    `, [id, item_id, quantity, person_id])
 }
 
 export async function updateCategory(id, name, description) {
@@ -146,8 +146,14 @@ export async function updateCategory(id, name, description) {
 }
 
 // deletes
-export async function deleteInventory(inv_id) {
+export async function deleteInventory(id) {
     await pool.query(`
         DELETE FROM inventory WHERE id = $1
-    `, [inv_id])
+    `, [id])
+}
+
+export async function deleteCategory(id) {
+    await pool.query(`
+        DELETE FROM category WHERE id = $1
+    `, [id])
 }

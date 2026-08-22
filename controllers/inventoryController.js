@@ -63,7 +63,7 @@ export const updateInventory = [
     async (req, res) => {
         const errs = validationResult(req)
         if (errs.isEmpty()) {
-            await queryUpdate(req.body.inv_id, req.body.item_id, req.body.quantity, req.body.person_id)
+            await queryUpdate(req.body.id, req.body.item_id, req.body.quantity, req.body.person_id)
             res.redirect('/')
         }
         else
@@ -77,7 +77,7 @@ export const deleteInventory = [
     async (req, res) => {
         const errs = validationResult(req)
         if (errs.isEmpty()) {
-            await queryDelete(req.body.inv_id)
+            await queryDelete(req.body.id)
             return res.redirect('/')
         }
         else

@@ -3,7 +3,8 @@ import {
     getCategories as queryAll,
     addCategory as queryAdd,
     getCategoryById,
-    updateCategory as queryUpdate
+    updateCategory as queryUpdate,
+    deleteCategory as queryDelete
 } from "../db/query.js"
 
 import { 
@@ -53,5 +54,17 @@ export const updateCategory = [
         }
         else
             res.send(errs.mapped())
+    }
+]
+
+export const deleteCategory = [
+    validateCategoryExists,
+    async (req, res) => {
+        const errs = validationResult(req)
+        if (errs.isEmpty()) {
+            await queryDelete(req.body.id)
+            return res.redirect('/category')
+        }
+        res.send(errs.mapped())
     }
 ]
