@@ -16,6 +16,6 @@ app.use('/category', categoryRouter)
 app.use('/item', itemRouter)
 app.use('/person', personRouter)
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, 'localhost', () => {
     console.log("Listening on " + process.env.PORT)
 })

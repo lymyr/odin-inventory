@@ -8,13 +8,34 @@
 <body>
     <%- include('partials/header') %>
     <%- include('partials/sidebar') %>
+
+    <% let sTitle = title.toLowerCase() %>
+    <% let namePlaceholder = locals.name ? name : '' %>
+    <% let descPlaceholder = locals.description ? description : '' %>
+
     <main>
-        <h1>Add <%= title %></h1>
-        <form method="POST" action="/<%= title.toLowerCase() %>">
+        <h1><%= title %> <%= type %></h1>
+        <form method="POST" action="/<%= sTitle %>/<%= type.toLowerCase() %>">
             <div>
                 <label for="name">Name:</label>
-                <input id="name" for="name">
-                <label></label>
+                <input id="name" name="name" value='<%= namePlaceholder %>'>
+
+                <% if (sTitle != 'person') { %>
+                    <label for="description">Description:</label>
+                    <input id="description" name="description" value='<%= descPlaceholder %>'>
+                <%}%>
+                
+                <% if (sTitle == 'item' && locals.categories && locals.categories.length > 0) {%> 
+                    <p>Category:</p>
+                    <% categories.forEach(category => { %>
+                        <label for="category-<%= category.id%>"><%= category.name %></label>
+                        <input id="category-<%= category.id%>" name="category">
+                    <%})%>
+                <%}%>
+
+                <% if (type.toLowerCase() == 'update') {%>
+                    <input value="<%=id%>" type="hidden" name="id">
+                <% } %>
             </div>
             <button type="submit">submit</button>
         </form>

@@ -90,6 +90,28 @@ export async function getInvMatchById(inv_id) {
     return rows
 }
 
+export async function getSameNameCategory(name) {
+    const { rows } = await pool.query(`
+        SELECT * FROM category WHERE
+            UPPER(name) = UPPER($1)    
+    `, [name])
+    return rows
+}
+
+export async function getSameNameUpdateCategory(id, name) {
+    const { rows } = await pool.query(`
+        SELECT * FROM category WHERE id != $1 AND UPPER(name) = UPPER($2)    
+    `, [id, name])
+    return rows
+}
+
+export async function getCategoryById(id) {
+    const { rows } = await pool.query(`
+        SELECT * FROM category WHERE id = $1    
+    `, [id])
+    return rows
+}
+
 // creates
 export async function addInventory(item_id, quantity, person_id) {
     await pool.query(`INSERT INTO inventory (item_id, quantity, person_id) 
@@ -97,7 +119,11 @@ export async function addInventory(item_id, quantity, person_id) {
     `, [item_id, quantity, person_id])
 }
 
-export async function addCategory() {}
+export async function addCategory(name, description) {
+    await pool.query(`
+        INSERT INTO category (name, description) VALUES ($1, $2)    
+    `, [name, description])
+}
 
 // updates
 export async function updateInventory(inv_id, item_id, quantity, person_id) {
@@ -108,6 +134,15 @@ export async function updateInventory(inv_id, item_id, quantity, person_id) {
             person_id = $4
         WHERE id = $1
     `, [inv_id, item_id, quantity, person_id])
+}
+
+export async function updateCategory(id, name, description) {
+    await pool.query(`
+        UPDATE category SET
+            name = $2,
+            description = $3
+        WHERE id = $1
+    `, [id, name, description])
 }
 
 // deletes

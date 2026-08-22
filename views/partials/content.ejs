@@ -20,11 +20,10 @@
                     </td>
                 <%})%>
                 <td>
-                    <form method="POST" action="/delete">
+                    <form method="POST" action="/<%= title.toLowerCase() %>/delete">
                         <input name='inv_id' value=<%= data.id %> hidden>
                         <button type="button" command="show-modal" commandFor="delete-dialog-<%= data.id %>">delete</button>
                         <dialog id="delete-dialog-<%= data.id %>">
-                            <% // make this work with other catalogs as well %>
                             <p>
                                 Are you sure you want to delete 
                                 <% if (title.toLowerCase() == 'inventory') {%>
@@ -40,7 +39,7 @@
                     
                 </td>
                 <td>
-                    <a href="/update/<%= data.id %>"><button>update</button></a>
+                    <a href="/<%= title.toLowerCase() %>/update/<%= data.id %>"><button>update</button></a>
                 </td>
             </tr>
         <%})%>

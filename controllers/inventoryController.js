@@ -43,7 +43,7 @@ export const addInventory = [
 ]
 
 export async function getUpdateInventory(req, res) {
-    const invMatch = await getInvMatchById(parseInt(req.params.id))
+    const invMatch = await getInvMatchById(parseInt(req.params.id)) // move to invValidation
     if (invMatch.length < 1)
         throw new Error('inventory not found')
     const [items, people] = await Promise.all([getItems(), getPeople()])
