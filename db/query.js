@@ -65,10 +65,21 @@ export async function getPerson(id) {
     return rows
 }
 
-export async function getInvMatch(item_id, person_id) {
-    const { rows } = await pool.query(`
-        SELECT * FROM inventory WHERE item_id = $1 AND person_id = $2
-    `, [item_id, person_id])
+export async function getInvMatch(item_id, person_id, inv_id=null) {
+    const q = async () => {
+        let query;
+        if (inv_id === null) {
+            query = await pool.query(`
+                SELECT * FROM inventory WHERE item_id = $1 AND person_id = $2
+            `, [item_id, person_id])
+            return query
+        }
+        query = await pool.query(`
+            SELECT * FROM inventory WHERE item_id = $1 AND person_id = $2 AND id != $3
+        `, [item_id, person_id, inv_id])
+        return query
+    }
+    const { rows } = await q()
     return rows
 }
 
@@ -85,6 +96,8 @@ export async function addInventory(item_id, quantity, person_id) {
         VALUES($1, $2, $3)
     `, [item_id, quantity, person_id])
 }
+
+export async function addCategory() {}
 
 // updates
 export async function updateInventory(inv_id, item_id, quantity, person_id) {
