@@ -112,6 +112,13 @@ export async function getCategoryById(id) {
     return rows
 }
 
+export async function getPersonByName(name) {
+    const { rows } = await pool.query(`
+        SELECT * FROM person WHERE UPPER(name) = UPPER($1)    
+    `, [name])
+    return rows
+}
+
 // creates
 export async function addInventory(item_id, quantity, person_id) {
     await pool.query(`INSERT INTO inventory (item_id, quantity, person_id) 
@@ -123,6 +130,12 @@ export async function addCategory(name, description) {
     await pool.query(`
         INSERT INTO category (name, description) VALUES ($1, $2)    
     `, [name, description])
+}
+
+export async function addPerson(name) {
+    await pool.query(`
+        INSERT INTO person (name) VALUES ($1)    
+    `, [name])
 }
 
 // updates
@@ -145,6 +158,14 @@ export async function updateCategory(id, name, description) {
     `, [id, name, description])
 }
 
+export async function updatePerson(id, name) {
+    await pool.query(`
+        UPDATE person SET
+            name = $2
+        WHERE id = $1
+    `, [id, name])
+}
+
 // deletes
 export async function deleteInventory(id) {
     await pool.query(`
@@ -155,5 +176,11 @@ export async function deleteInventory(id) {
 export async function deleteCategory(id) {
     await pool.query(`
         DELETE FROM category WHERE id = $1
+    `, [id])
+}
+
+export async function deletePerson(id) {
+    await pool.query(`
+        DELETE FROM person WHERE id = $1
     `, [id])
 }
