@@ -18,7 +18,7 @@ export const validateAddCategory = [
 export const validateUpdateCategory = [
     ...generalValidation,
     body('name').custom(async (value, {req, res}) => {
-        const sameName = await getSameNameUpdateCategory(req.params.id, value)
+        const sameName = await getSameNameUpdateCategory(req.body.id, value)
         if (sameName.length > 0)
             throw new Error('Category already exists')
     })
