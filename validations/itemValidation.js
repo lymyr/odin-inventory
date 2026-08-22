@@ -1,0 +1,31 @@
+import { body } from "express-validator";
+import generalValidation, { validateIdBody } from "./generalValidation.js";
+import { getItemByName, getItemsFilterId } from "../db/query.js";
+
+const santizeCategory = body('category').toArray()
+    .customSanitizer(async (cats, {req, res}) => {
+        return cats.map(catID => parseInt(catID))
+})
+
+export const itemValidation = [
+    ...generalValidation,
+    body('name').notEmpty().bail()
+        .custom(async (name) => {
+            const item = await getItemByName(name)
+            if (item.length !== 0)
+                throw new Error("Item already exists")
+        }),
+    santizeCategory
+]
+
+export const itemUpdateValidation = [
+    ...generalValidation,
+    validateIdBody,
+    body('name').notEmpty().bail()
+        .custom(async (name, {req, res}) => {
+            const item = await getItemsFilterId(req.body.id, name)
+            if (item.length > 0)
+                throw new Error('Item already exists')
+        }),
+    santizeCategory
+]

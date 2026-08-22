@@ -10,7 +10,7 @@
     <%- include('partials/sidebar') %>
 
     <% let sTitle = title.toLowerCase() %>
-    <% let namePlaceholder = locals.name ? name : '' %>
+    <% let namePlaceholder = locals.name ? locals.name : '' %>
     <% let descPlaceholder = locals.description ? description : '' %>
 
     <main>
@@ -28,8 +28,16 @@
                 <% if (sTitle == 'item' && locals.categories && locals.categories.length > 0) {%> 
                     <p>Category:</p>
                     <% categories.forEach(category => { %>
+                        <input 
+                            id="category-<%= category.id%>" 
+                            type="checkbox" 
+                            name="category" 
+                            value="<%=category.id%>"
+                            <% if (type.toLowerCase() == 'update' && itemCategories.includes(category.id)) { %>
+                                checked
+                            <%}%>
+                        >
                         <label for="category-<%= category.id%>"><%= category.name %></label>
-                        <input id="category-<%= category.id%>" name="category">
                     <%})%>
                 <%}%>
 
