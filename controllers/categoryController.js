@@ -12,6 +12,7 @@ import {
     validateCategoryExists,
     validateUpdateCategory
  } from "../validations/categoryValidation.js"
+import { validateIdBody, validateIdParam } from "../validations/generalValidation.js"
 
 
 export async function getCategories(req, res) {
@@ -35,13 +36,16 @@ export const addCategory = [
     }
 ]
 
-export async function getUpdateCategory(req, res) {
-    const cat = await getCategoryById(parseInt(req.params.id))
-    if (cat.length != 0)
-        return res.render('otherForm', {title: 'Category', type:'Update', id: cat[0].id, name: cat[0].name, description: cat[0].description})
-    else
-        throw new Error('Category doesn\'t exist')
-}
+export const getUpdateCategory = [
+    validateIdParam,
+    async (req, res) => {
+        const cat = await getCategoryById(req.params.id)
+        if (cat.length != 0)
+            return res.render('otherForm', {title: 'Category', type:'Update', id: cat[0].id, name: cat[0].name, description: cat[0].description})
+        else
+            throw new Error('Category doesn\'t exist')
+    }
+]
 
 export const updateCategory = [
     validateCategoryExists,
@@ -58,6 +62,7 @@ export const updateCategory = [
 ]
 
 export const deleteCategory = [
+    validateIdBody,
     validateCategoryExists,
     async (req, res) => {
         const errs = validationResult(req)

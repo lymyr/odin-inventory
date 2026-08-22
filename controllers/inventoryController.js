@@ -14,6 +14,7 @@ import {
     validateInventoryDoesntExist,
     validateInventoryIdExists
  } from "../validations/inventoryValidation.js";
+import { validateIdBody, validateIdParam } from "../validations/generalValidation.js";
 
 
 
@@ -42,19 +43,22 @@ export const addInventory = [
     }
 ]
 
-export async function getUpdateInventory(req, res) {
-    const invMatch = await getInvMatchById(parseInt(req.params.id)) // move to invValidation
-    if (invMatch.length < 1)
-        throw new Error('inventory not found')
-    const [items, people] = await Promise.all([getItems(), getPeople()])
-    res.render('invenForm', {
-        title: 'Inventory', 
-        type: 'Update', 
-        invMatch: invMatch[0],
-        items: items,
-        people: people
-    })
-}
+export const getUpdateInventory = [
+    validateIdParam,
+    async (req, res) => {
+        const invMatch = await getInvMatchById(req.params.id)
+        if (invMatch.length < 1)
+            throw new Error('inventory not found')
+        const [items, people] = await Promise.all([getItems(), getPeople()])
+        res.render('invenForm', {
+            title: 'Inventory', 
+            type: 'Update', 
+            invMatch: invMatch[0],
+            items: items,
+            people: people
+        })
+    }
+]
 
 export const updateInventory = [
     validateInventoryIdExists(),
@@ -73,6 +77,7 @@ export const updateInventory = [
 
 
 export const deleteInventory = [
+    validateIdBody,
     validateInventoryIdExists(),
     async (req, res) => {
         const errs = validationResult(req)
