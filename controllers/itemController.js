@@ -73,6 +73,7 @@ export const deleteItem = [
             await queryDelete(req.body.id)
             return res.redirect('/item')
         }
-        res.send(errs.mapped())
+        const items = await queryAll()
+        res.status(400).render('index', {title:'Item', dataList: items, errors: errs.array()})
     }
 ]

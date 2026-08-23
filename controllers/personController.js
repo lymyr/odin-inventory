@@ -59,6 +59,7 @@ export const deletePerson = [
             await queryDelete(req.body.id)
             return res.redirect('/person')
         }
-        res.send(errs.mapped())
+        const persons = await queryAll()
+        res.status(400).render('index', {title:'Person', dataList: persons, errors: errs.array()})
     }
 ]

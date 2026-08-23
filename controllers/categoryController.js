@@ -70,6 +70,7 @@ export const deleteCategory = [
             await queryDelete(req.body.id)
             return res.redirect('/category')
         }
-        res.send(errs.mapped())
+        const categories = await queryAll()
+        res.status(400).render('index', {title:'Category', dataList: categories, errors: errs.array()})
     }
 ]
