@@ -70,9 +70,9 @@ export const getUpdateInventory = [
 ]
 
 export const updateInventory = [
+    validateInventory,
     validateInventoryIdExists(),
     validateInventoryDoesntExist(),
-    validateInventory,
     async (req, res) => {
         const errs = validationResult(req)
         if (errs.isEmpty()) {
