@@ -166,6 +166,14 @@ export async function getPersonByName(name) {
     return rows
 }
 
+export async function getPersonInInv(person_id) {
+    const { rows } = await pool.query(`
+        SELECT * FROM inventory INNER JOIN person ON inventory.person_id = person.id
+        WHERE person.id = $1 LIMIT 1
+    `, [person_id])
+    return rows
+}
+
 // creates
 export async function addInventory(item_id, quantity, person_id) {
     await pool.query(`INSERT INTO inventory (item_id, quantity, person_id) 

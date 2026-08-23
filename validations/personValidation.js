@@ -1,6 +1,6 @@
-import { body, param } from "express-validator";
-import generalValidation from "./generalValidation.js";
-import { getPerson, getPersonByName } from "../db/query.js";
+import { body } from "express-validator";
+import generalValidation, { validateIdBody } from "./generalValidation.js";
+import { getPerson, getPersonByName, getPersonInInv } from "../db/query.js";
 
 export const validatePerson = [
     ...generalValidation,
@@ -16,3 +16,13 @@ export const validatePersonByIdExists = body('id').custom(async value => {
     if (person.length !== 1)
         throw new Error('Invalid id')
 })
+
+export const validateDeletePerson = [
+    validateIdBody,
+    validatePersonByIdExists,
+    body('id').custom(async person_id => {
+        const personInv = await getPersonInInv(person_id)
+        if (personInv.length > 0)
+            throw new Error(`${personInv[0].name} still has items in inventory`)
+    })
+]

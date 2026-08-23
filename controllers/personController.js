@@ -6,8 +6,8 @@ import {
     updatePerson as queryUpdate,
     deletePerson as queryDelete
 } from "../db/query.js"
-import { validatePerson, validatePersonByIdExists } from "../validations/personValidation.js"
-import { validateIdBody, validateIdParam } from "../validations/generalValidation.js"
+import { validateDeletePerson, validatePerson, validatePersonByIdExists } from "../validations/personValidation.js"
+import { validateIdParam } from "../validations/generalValidation.js"
 
 export async function getPeople(req, res) {
     const persons = await queryAll()
@@ -52,8 +52,7 @@ export const updatePerson = [
 ]
 
 export const deletePerson = [
-    validateIdBody,
-    validatePersonByIdExists,
+    ...validateDeletePerson,
     async (req, res) => {
         const errs = validationResult(req)
         if (errs.isEmpty()) {
