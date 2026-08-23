@@ -13,7 +13,7 @@
                 <% Object.values(data).forEach((cell, i) => { %>
                     <td class="<%= Object.keys(dataList[0])[i] %>">
                         <div>
-                            <% if (Array.isArray(cell)) { %>
+                            <% if (Array.isArray(cell) && cell[0] !== null) { %>
                                 <% cell.forEach(category => { %>
                                 <div><%= category %></div>
                             <%})} else {%>

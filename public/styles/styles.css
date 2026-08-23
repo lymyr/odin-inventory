@@ -47,6 +47,11 @@ header button svg {
     fill: #000000;
 }
 
+input, select {
+    max-width: 180px;
+    min-height: 2rem
+}
+
 /* custom styles */
 header {
     display: flex;
@@ -128,6 +133,18 @@ main {
     padding: 16px;
 }
 
+main > form,
+main table {
+    margin-top: 24px;
+}
+
+main > div {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
 main table {
     width: 100%;
     border: 1px solid black;
@@ -147,7 +164,9 @@ tr > td:nth-last-child(1),
 tr > td:nth-last-child(2) {
     padding: 0;
 }
-tr button {
+
+tr a button,
+tr td > form > button {
     width: 100%;
     height: 100%;
     cursor: pointer;
@@ -171,4 +190,40 @@ td div > div {
     font-size: 0.8rem;
     border-radius: 4px;
     background-color: gray;
+}
+
+main > form {
+    --gap: 12px;
+}
+
+form div:has(select),
+form div:has(input) {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+form div > div > div:has(.checkbox-wrapper) {
+    gap: 4px;
+    flex-direction: row;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:8px;
+    width: fit-content;
+}
+
+main > form > div {
+    display: flex;
+    flex-direction: column;
+    gap:var(--gap);
+}
+
+main > form > button {
+    margin-top: var(--gap);
 }

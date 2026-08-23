@@ -14,8 +14,10 @@
         <%- include('partials/sidebar') %>
         <%- include('partials/errorDialog') %>
         <main>
-            <h1><%= title %></h1>
-            <a href="<%= title.toLowerCase() %>/add"><button>Add</button></a>
+            <div>
+                <h1><%= title %></h1>
+                <a href="<%= title.toLowerCase() %>/add"><button>Add</button></a>
+            </div>
             <%- include('partials/content') %>
         </main>
     </div>

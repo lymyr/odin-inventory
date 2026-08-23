@@ -39,21 +39,25 @@
                     <% if (sTitle == 'item' && locals.categories && locals.categories.length > 0) {%>
                         <div>
                             <p>Category:</p>
-                            <% categories.forEach(category => { %>
-                                <input
-                                    id="category-<%= category.id%>"
-                                    type="checkbox"
-                                    name="category"
-                                    value="<%=category.id%>"
-                                    <% if (locals.itemCategories && itemCategories.includes(category.id)) { %>
-                                        checked
-                                    <%}%>
-                                >
-                                <label for="category-<%= category.id%>"><%= category.name %></label>
-                            <%})%>
-                            <% if (locals.errors && errors.category) {%>
-                                <p class="error-msg"><%= errors.category.msg %></p>
-                            <%}%>
+                            <div>
+                                <% categories.forEach(category => { %>
+                                    <div class="checkbox-wrapper">
+                                        <input
+                                            id="category-<%= category.id%>"
+                                            type="checkbox"
+                                            name="category"
+                                            value="<%=category.id%>"
+                                            <% if (locals.itemCategories && itemCategories.includes(category.id)) { %>
+                                                checked
+                                            <%}%>
+                                        >
+                                        <label for="category-<%= category.id%>"><%= category.name %></label>
+                                    </div>
+                                <%})%>
+                                <% if (locals.errors && errors.category) {%>
+                                    <p class="error-msg"><%= errors.category.msg %></p>
+                                <%}%>
+                            </div>
                         </div>
                     <%}%>
                     <% if (type.toLowerCase() == 'update') {%>
