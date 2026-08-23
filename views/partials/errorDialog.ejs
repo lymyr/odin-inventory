@@ -1,8 +1,10 @@
 <% if (locals.errors) { %>
-    <dialog id="err-dialog" open>
+    <dialog id="err-dialog">
         <% errors.forEach(err => { %>
             <p><%= err.msg %></p>
         <%})%>
         <button commandfor="err-dialog" command="close">Close</button>
     </dialog>
+
+    <script src="/scripts/errorDialogInteractions.js" defer></script>
 <%}%>
