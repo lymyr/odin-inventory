@@ -12,8 +12,8 @@ export async function getInventory() {
         FROM inventory
         INNER JOIN person ON inventory.person_id = person.id
         INNER JOIN item ON inventory.item_id = item.id
-        INNER JOIN item_category ON item_category.item_id = item.id
-        INNER JOIN category ON item_category.category_id = category.id
+        LEFT JOIN item_category ON item_category.item_id = item.id
+        LEFT JOIN category ON item_category.category_id = category.id
         GROUP BY inventory.id, item, quantity, owner 
         ORDER BY owner
     `)
