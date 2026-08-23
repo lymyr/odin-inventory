@@ -17,28 +17,45 @@
         <h1><%= title %> <%= type %></h1>
         <form method="POST" action="/<%= sTitle %>/<%= type.toLowerCase() %>">
             <div>
-                <label for="name">Name:</label>
-                <input id="name" name="name" value='<%= namePlaceholder %>'>
+                <div>
+                    <label for="name">Name:</label>
+                    <input id="name" name="name" value='<%= namePlaceholder %>'>
+                    <% if (locals.errors && errors.name) {%>
+                        <p class="error-msg"><%= errors.name.msg %></p>
+                    <%}%>
+                </div>
 
                 <% if (sTitle != 'person') { %>
-                    <label for="description">Description:</label>
-                    <input id="description" name="description" value='<%= descPlaceholder %>'>
+                    <div>
+                        <label for="description">Description:</label>
+                        <input id="description" name="description" value='<%= descPlaceholder %>'>
+                        <% if (locals.errors && errors.description) {%>
+                            <p class="error-msg"><%= errors.description.msg %></p>
+                        <%}%>
+                    </div>
                 <%}%>
                 
                 <% if (sTitle == 'item' && locals.categories && locals.categories.length > 0) {%> 
-                    <p>Category:</p>
-                    <% categories.forEach(category => { %>
-                        <input 
-                            id="category-<%= category.id%>" 
-                            type="checkbox" 
-                            name="category" 
-                            value="<%=category.id%>"
-                            <% if (type.toLowerCase() == 'update' && itemCategories.includes(category.id)) { %>
-                                checked
-                            <%}%>
-                        >
-                        <label for="category-<%= category.id%>"><%= category.name %></label>
-                    <%})%>
+                    <div>
+                        <p>Category:</p>
+                        <% categories.forEach(category => { %>
+                            <input
+                                id="category-<%= category.id%>"
+                                type="checkbox"
+                                name="category"
+                                value="<%=category.id%>"
+                                <% if (locals.itemCategories && itemCategories.includes(category.id)) { %>
+                                    checked
+                                <%}%>
+                            >
+                            <label for="category-<%= category.id%>"><%= category.name %></label>
+                        <%})%>
+
+                        <% if (locals.errors && errors.category) {%>
+                            <p class="error-msg"><%= errors.category.msg %></p>
+                        <%}%>
+
+                    </div>
                 <%}%>
 
                 <% if (type.toLowerCase() == 'update') {%>

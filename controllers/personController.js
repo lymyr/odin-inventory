@@ -26,7 +26,12 @@ export const addPerson = [
             await queryAdd(req.body.name)
             return res.redirect('/person')
         }
-        res.send(errs.mapped())
+        res.render('otherForm', {
+            title: 'Person',
+            type: 'Add',
+            errors: errs.mapped(),
+            name: req.body.name
+        })
     }
 ]
 
@@ -34,20 +39,27 @@ export const getUpdatePerson = [
     validateIdParam,
     async (req, res) => {
         const person = await getPerson(req.params.id)
+        if (person.length < 1)
+            throw new Error('Person not found')
         res.render('otherForm', {title: 'Person', type: 'Update', id: person[0].id, name: person[0].name})
     }
 ]
 
 export const updatePerson = [
-    ...validatePerson,
-    validatePersonByIdExists,
+    ...validatePersonByIdExists,
     async (req, res) => {
         const errs = validationResult(req)
         if (errs.isEmpty()) {
             await queryUpdate(req.body.id, req.body.name)
             return res.redirect('/person')
         }
-        res.send(errs.mapped())
+        res.render('otherForm', {
+            title: 'Person',
+            type: 'Update',
+            errors: errs.mapped(),
+            id: req.body.id, 
+            name: req.body.name
+        })
     }
 ]
 

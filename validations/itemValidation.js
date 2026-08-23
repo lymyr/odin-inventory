@@ -3,7 +3,7 @@ import generalValidation, { validateIdBody } from "./generalValidation.js";
 import { getItemByName, getItemsFilterId, getItemsInInv } from "../db/query.js";
 
 const santizeCategory = body('category').toArray()
-    .customSanitizer(async (cats, {req, res}) => {
+    .customSanitizer(async (cats) => {
         return cats.map(catID => parseInt(catID))
 })
 

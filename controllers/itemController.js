@@ -1,4 +1,4 @@
-import { validationResult } from "express-validator"
+import { body, validationResult } from "express-validator"
 import { 
     getCategories,
     getItemsCategory as queryAll,
@@ -30,7 +30,17 @@ export const addItem = [
                 throw new Error(queryRes)
             return res.redirect('/item')
         }
-        res.send(errs.mapped())
+        const categories = await getCategories()
+        res.render('otherForm', {
+            title: 'Item', 
+            type:'Add', 
+            id: req.body.id, 
+            name: req.body.name, 
+            description: req.body.description, 
+            itemCategories: req.body.category, 
+            categories: categories,
+            errors: errs.mapped()
+        })
     }
 ]
 
@@ -40,10 +50,12 @@ export const getUpdateItem = [
         const errs = validationResult(req)
         if (errs.isEmpty()) {
             const {item, category} = await getItemCategory(req.params.id)
+            if (item.length < 1)
+                throw new Error('Item not found')
             return res.render('otherForm', {title: 'Item', type:'Update', id: item[0].id, name: item[0].name, description: item[0].description, itemCategories: item[0].category, categories: category})
         }
             
-        res.send(errs.mapped())
+        throw new Error(errs.array()[0])
     }
 ]
 
@@ -60,7 +72,17 @@ export const updateItem = [
             )
             return res.redirect('/item')
         }
-        res.send(errs.mapped())
+        const categories = await getCategories()
+        res.render('otherForm', {
+            title: 'Item', 
+            type:'Update', 
+            id: req.body.id, 
+            name: req.body.name, 
+            description: req.body.description, 
+            itemCategories: req.body.category, 
+            categories: categories,
+            errors: errs.mapped()
+        })
     }
 ]
 

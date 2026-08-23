@@ -17,7 +17,12 @@ app.use('/item', itemRouter)
 app.use('/person', personRouter)
 
 app.use((req, res) => {
-    res.render('error', {title: 'Error'})
+    res.render('error', {title: 'Error', errorDesc: 'Page not Found'})
+})
+
+// may add custom Error class with customized title depending on error
+app.use((err, req, res, next) => {
+    res.render('error', {title: 'Error', errorDesc: err})
 })
 
 app.listen(process.env.PORT, 'localhost', () => {

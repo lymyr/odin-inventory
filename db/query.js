@@ -82,20 +82,6 @@ export async function getItemCategory(id) {
     }
 }
 
-export async function getItemByName(name) {
-    const { rows } = await pool.query(`
-        SELECT * FROM item WHERE UPPER(item.name) = UPPER($1)
-    `, [name])
-    return rows
-}
-
-export async function getItemsFilterId(id, name) {
-    const { rows } = await pool.query(`
-        SELECT * FROM item WHERE UPPER(item.name) = UPPER($1) AND id != $2
-    `, [name, id])
-    return rows
-}
-
 export async function getItemsInInv(id) {
     const { rows } = await pool.query(`
         SELECT item_id, person_id, person.name FROM inventory
@@ -112,17 +98,33 @@ export async function getPerson(id) {
     return rows
 }
 
+
+// validation queries
+export async function getItemByName(name) {
+    const { rows } = await pool.query(`
+        SELECT * FROM item WHERE UPPER(item.name) = UPPER($1) LIMIT 1
+    `, [name])
+    return rows
+}
+
+export async function getItemsFilterId(id, name) {
+    const { rows } = await pool.query(`
+        SELECT * FROM item WHERE UPPER(item.name) = UPPER($1) AND id != $2 LIMIT 1
+    `, [name, id])
+    return rows
+}
+
 export async function getInvMatch(item_id, person_id, id=null) {
     const q = async () => {
         let query;
         if (id === null) {
             query = await pool.query(`
-                SELECT * FROM inventory WHERE item_id = $1 AND person_id = $2
+                SELECT * FROM inventory WHERE item_id = $1 AND person_id = $2 LIMIT 1
             `, [item_id, person_id])
             return query
         }
         query = await pool.query(`
-            SELECT * FROM inventory WHERE item_id = $1 AND person_id = $2 AND id != $3
+            SELECT * FROM inventory WHERE item_id = $1 AND person_id = $2 AND id != $3 LIMIT 1
         `, [item_id, person_id, id])
         return query
     }
@@ -132,7 +134,7 @@ export async function getInvMatch(item_id, person_id, id=null) {
 
 export async function getInvMatchById(id) {
     const { rows } = await pool.query(`
-        SELECT * FROM inventory WHERE id = $1
+        SELECT * FROM inventory WHERE id = $1 LIMIT 1
     `, [id])
     return rows
 }
@@ -140,29 +142,36 @@ export async function getInvMatchById(id) {
 export async function getSameNameCategory(name) {
     const { rows } = await pool.query(`
         SELECT * FROM category WHERE
-            UPPER(name) = UPPER($1)    
+            UPPER(name) = UPPER($1) LIMIT 1
     `, [name])
     return rows
 }
 
 export async function getSameNameUpdateCategory(id, name) {
     const { rows } = await pool.query(`
-        SELECT * FROM category WHERE id != $1 AND UPPER(name) = UPPER($2)    
+        SELECT * FROM category WHERE id != $1 AND UPPER(name) = UPPER($2) LIMIT 1   
     `, [id, name])
     return rows
 }
 
 export async function getCategoryById(id) {
     const { rows } = await pool.query(`
-        SELECT * FROM category WHERE id = $1    
+        SELECT * FROM category WHERE id = $1 LIMIT 1
     `, [id])
     return rows
 }
 
 export async function getPersonByName(name) {
     const { rows } = await pool.query(`
-        SELECT * FROM person WHERE UPPER(name) = UPPER($1)    
+        SELECT * FROM person WHERE UPPER(name) = UPPER($1) LIMIT 1
     `, [name])
+    return rows
+}
+
+export async function getPersonByNameFilterId(id, name) {
+    const { rows } = await pool.query(
+        `SELECT * FROM PERSON WHERE UPPER(name) = UPPER($1) AND id != $2 LIMIT 1`
+    ,[name, id])
     return rows
 }
 
@@ -214,8 +223,8 @@ export async function addItem(name, description, categories) {
         await client.query('COMMIT')
     }
     catch(e) {
-        return e
         await client.query('ROLLBACK')
+        throw e
     }
     finally {
         client.release()

@@ -37,7 +37,7 @@ const validateInventoryDoesntExist = () => body('item_id')
     })
 
 const validateInventoryIdExists = () => body('id')
-    .isInt().bail().toInt().custom(async (id, {req, res}) => {
+    .isInt().bail().toInt().custom(async (id) => {
         const matchingInv = await getInvMatchById(id)
         if (matchingInv < 1)
             throw new Error("Inventory doesn't exist")

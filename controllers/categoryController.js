@@ -1,4 +1,4 @@
-import { body, validationResult } from "express-validator"
+import { validationResult } from "express-validator"
 import { 
     getCategories as queryAll,
     addCategory as queryAdd,
@@ -32,7 +32,13 @@ export const addCategory = [
             await queryAdd(req.body.name, req.body.description)
             return res.redirect('/category')
         }
-        res.send(errs.mapped())
+        res.render('otherForm', {
+            title: 'Category', 
+            type:'Add', 
+            errors: errs.mapped(),
+            name: req.body.name, 
+            description: req.body.description
+        })
     }
 ]
 
@@ -57,7 +63,14 @@ export const updateCategory = [
             res.redirect('/category')
         }
         else
-            res.send(errs.mapped())
+            res.render('otherForm', {
+                title: 'Category', 
+                type:'Update', 
+                errors: errs.mapped(),
+                id: req.body.id, 
+                name: req.body.name, 
+                description: req.body.description
+            })
     }
 ]
 
