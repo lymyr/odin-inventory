@@ -15,6 +15,7 @@ categoryRouter.get('/add', getAddCategory)
 categoryRouter.post('/add', addCategory)
 categoryRouter.get('/update/:id', getUpdateCategory)
 categoryRouter.post('/update', updateCategory)
+// todo: add delete validation if category is used while being used by an item
 categoryRouter.post('/delete', deleteCategory)
 
 export default categoryRouter

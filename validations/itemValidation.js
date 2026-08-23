@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import generalValidation, { validateIdBody } from "./generalValidation.js";
-import { getItemByName, getItemsFilterId } from "../db/query.js";
+import { getItemByName, getItemsFilterId, getItemsInInv } from "../db/query.js";
 
 const santizeCategory = body('category').toArray()
     .customSanitizer(async (cats, {req, res}) => {
@@ -28,4 +28,16 @@ export const itemUpdateValidation = [
                 throw new Error('Item already exists')
         }),
     santizeCategory
+]
+
+
+export const itemDeleteValidation = [
+    validateIdBody,
+    body('id').custom(async item_id => {
+        const invItems = await getItemsInInv(item_id)
+        if (invItems.length > 0) {
+            const owners = invItems.map(it => it.name)
+            throw new Error(`Item is still being used by ${owners.join(', ')}`)
+        }
+    })
 ]

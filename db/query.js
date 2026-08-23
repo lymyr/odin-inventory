@@ -96,6 +96,15 @@ export async function getItemsFilterId(id, name) {
     return rows
 }
 
+export async function getItemsInInv(id) {
+    const { rows } = await pool.query(`
+        SELECT item_id, person_id, person.name FROM inventory
+        INNER JOIN person ON person_id = person.id
+        WHERE item_id = $1 
+    `, [id])
+    return rows
+}
+
 export async function getPerson(id) {
     const { rows } = await pool.query(`
         SELECT * FROM person WHERE person.id = $1
@@ -300,4 +309,27 @@ export async function deletePerson(id) {
     await pool.query(`
         DELETE FROM person WHERE id = $1
     `, [id])
+}
+
+export async function deleteItem(id) {
+    const client = await pool.connect()
+    try {
+        await client.query('BEGIN')
+        await client.query(`
+            DELETE FROM item_category WHERE item_id = $1    
+        `, [id])
+        await client.query(`
+            DELETE FROM item WHERE id = $1    
+        `, [id])
+        await client.query('COMMIT')
+    }
+    catch(e) {
+        await client.query('ROLLBACK')
+        console.error(e)
+        return e
+    }
+    finally {
+        client.release()
+        return 200
+    }
 }

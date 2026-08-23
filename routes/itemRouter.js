@@ -4,7 +4,8 @@ import {
     getAddItem,
     addItem,
     getUpdateItem,
-    updateItem
+    updateItem,
+    deleteItem
  } from "../controllers/itemController.js";
 
 const itemRouter = Router()
@@ -14,6 +15,6 @@ itemRouter.get('/add', getAddItem)
 itemRouter.post('/add', addItem)
 itemRouter.get('/update/:id', getUpdateItem)
 itemRouter.post('/update', updateItem)
-// itemRouter.post('/delete', deleteItem)
+itemRouter.post('/delete', deleteItem)
 
 export default itemRouter

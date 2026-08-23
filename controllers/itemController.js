@@ -4,9 +4,10 @@ import {
     getItemsCategory as queryAll,
     addItem as queryAdd,
     getItemCategory,
-    updateItem as queryUpdate
+    updateItem as queryUpdate,
+    deleteItem as queryDelete
 } from "../db/query.js"
-import { itemUpdateValidation, itemValidation } from "../validations/itemValidation.js"
+import { itemDeleteValidation, itemUpdateValidation, itemValidation } from "../validations/itemValidation.js"
 import { validateIdParam } from "../validations/generalValidation.js"
 
 export async function getItems(req, res) {
@@ -61,6 +62,19 @@ export const updateItem = [
                 throw new Error(queryRes)
             else
                 return res.redirect('/item')
+        }
+        res.send(errs.mapped())
+    }
+]
+
+
+export const deleteItem = [
+    ...itemDeleteValidation,
+    async (req, res) => {
+        const errs = validationResult(req)
+        if (errs.isEmpty()) {
+            await queryDelete(req.body.id)
+            return res.redirect('/item')
         }
         res.send(errs.mapped())
     }
