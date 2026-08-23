@@ -52,16 +52,13 @@ export const updateItem = [
     async (req, res) => {
         const errs = validationResult(req)
         if (errs.isEmpty()) {
-            const queryRes = await queryUpdate(
+            await queryUpdate(
                 req.body.id, 
                 req.body.name, 
                 req.body.description,
                 req.body.category
             )
-            if (queryRes !== 200)
-                throw new Error(queryRes)
-            else
-                return res.redirect('/item')
+            return res.redirect('/item')
         }
         res.send(errs.mapped())
     }

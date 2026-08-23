@@ -253,42 +253,41 @@ export async function updateItem(id, name, description, categoryList) {
         categoryList.forEach((cat, i) => {
             params.push(`$${i+2}`)
         })
-
-
+        
         await client.query(`
             UPDATE item SET name = $1, description = $2
             WHERE id = $3
         `, [name, description, id])
 
         await client.query(`
-            DELETE FROM item_category WHERE item_id = $1 AND 
-                category_id NOT IN (${params.toString()})
-        `, [id, ...categoryList])
-  
-        const oldCats = await client.query(`
-            SELECT category_id FROM item_category WHERE item_id = $1 AND
-                category_id IN (${params.toString()})
+            DELETE FROM item_category WHERE item_id = $1
+                ${categoryList.length > 0 ? `AND category_id NOT IN (${params.toString()})` : ''}
         `, [id, ...categoryList])
         
-        for (const cat of categoryList) {
-            if (!oldCats.rows.map(catObj => catObj.category_id).includes(cat))
-                await client.query(`
-                    INSERT INTO item_category (item_id, category_id)
-                    VALUES ($1, $2)
-                `, [id, cat])
+        if (categoryList.length > 0) {
+            const oldCats = await client.query(`
+                SELECT category_id FROM item_category WHERE item_id = $1 AND
+                    category_id IN (${params.toString()})
+            `, [id, ...categoryList])
+            
+            for (const new_cat of categoryList) {
+                if (!oldCats.rows.map(catObj => catObj.category_id).includes(new_cat))
+                    await client.query(`
+                        INSERT INTO item_category (item_id, category_id)
+                        VALUES ($1, $2)
+                    `, [id, new_cat])
+            }
         }
 
         await client.query('COMMIT')
     }
     catch(e) {
-        console.error(e)
-        return e
         await client.query('ROLLBACK')
+        throw e
     }
     finally {
         client.release()
     }
-    return 200
 }
 
 
@@ -300,9 +299,24 @@ export async function deleteInventory(id) {
 }
 
 export async function deleteCategory(id) {
-    await pool.query(`
-        DELETE FROM category WHERE id = $1
-    `, [id])
+    const client = await pool.connect()
+    try {
+        await client.query('BEGIN')
+        await client.query(`
+            DELETE FROM item_category WHERE category_id = $1    
+        `, [id])
+        await client.query(`
+            DELETE FROM category WHERE id = $1    
+        `, [id])
+        await client.query('COMMIT')
+    }
+    catch(e) {
+        await client.query('ROLLBACK')
+        throw e
+    }
+    finally {
+        client.release()
+    }
 }
 
 export async function deletePerson(id) {
@@ -325,11 +339,9 @@ export async function deleteItem(id) {
     }
     catch(e) {
         await client.query('ROLLBACK')
-        console.error(e)
-        return e
+        throw e
     }
     finally {
         client.release()
-        return 200
     }
 }
