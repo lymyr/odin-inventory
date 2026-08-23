@@ -6,17 +6,20 @@
             <% Object.keys(dataList[0]).forEach(colName => { %>
                 <th><%= colName %></th>
             <%})%>
+            <th colspan="2">actions</th>
         </tr>
         <% dataList.forEach(data => { %>
             <tr>
-                <% Object.values(data).forEach(cell => { %>
-                    <td>
-                        <% if (Array.isArray(cell)) { %>
-                            <% cell.forEach(category => { %>
-                            <div><%= category %></div>
-                        <%})} else {%>
-                            <%= cell %>
-                        <%}%>
+                <% Object.values(data).forEach((cell, i) => { %>
+                    <td class="<%= Object.keys(dataList[0])[i] %>">
+                        <div>
+                            <% if (Array.isArray(cell)) { %>
+                                <% cell.forEach(category => { %>
+                                <div><%= category %></div>
+                            <%})} else {%>
+                                <%= cell %>
+                            <%}%>
+                        </div>
                     </td>
                 <%})%>
                 <td>

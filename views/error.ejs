@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <link rel="stylesheet" type="text/css" href="/styles/reset.css">
+    <link rel="stylesheet" type="text/css" href="/styles/styles.css">
+    <script src="/scripts/sidebarInteractions.js" defer></script>
 </head>
 <body>
-    <%- include('partials/header') %>
-    <%- include('partials/sidebar') %>
-    <h1><%= title %></h1>
-    <main>
-        <p><%= locals.errorDesc %></p>
-        <a href="/"><button>return home</button></a>
-    </main>
+    <div class="wrapper">
+        <%- include('partials/header') %>
+        <%- include('partials/sidebar') %>
+        <h1><%= title %></h1>
+        <main>
+            <p><%= locals.errorDesc %></p>
+            <a href="/"><button>return home</button></a>
+        </main>
+    </div>
 </body>
 </html>

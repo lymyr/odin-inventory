@@ -4,66 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <link rel="stylesheet" type="text/css" href="/styles/reset.css">
+    <link rel="stylesheet" type="text/css" href="/styles/styles.css">
+    <script src="/scripts/sidebarInteractions.js" defer></script>
 </head>
 <body>
-    <%- include('partials/header') %>
-    <%- include('partials/sidebar') %>
-
-    <% let sTitle = title.toLowerCase() %>
-    <% let namePlaceholder = locals.name ? locals.name : '' %>
-    <% let descPlaceholder = locals.description ? description : '' %>
-
-    <main>
-        <h1><%= title %> <%= type %></h1>
-        <form method="POST" action="/<%= sTitle %>/<%= type.toLowerCase() %>">
-            <div>
+    <div class="wrapper">
+        <%- include('partials/header') %>
+        <%- include('partials/sidebar') %>
+        <% let sTitle = title.toLowerCase() %>
+        <% let namePlaceholder = locals.name ? locals.name : '' %>
+        <% let descPlaceholder = locals.description ? description : '' %>
+        <main>
+            <h1><%= title %> <%= type %></h1>
+            <form method="POST" action="/<%= sTitle %>/<%= type.toLowerCase() %>">
                 <div>
-                    <label for="name">Name:</label>
-                    <input id="name" name="name" value='<%= namePlaceholder %>'>
-                    <% if (locals.errors && errors.name) {%>
-                        <p class="error-msg"><%= errors.name.msg %></p>
+                    <div>
+                        <label for="name">Name:</label>
+                        <input id="name" name="name" value='<%= namePlaceholder %>'>
+                        <% if (locals.errors && errors.name) {%>
+                            <p class="error-msg"><%= errors.name.msg %></p>
+                        <%}%>
+                    </div>
+                    <% if (sTitle != 'person') { %>
+                        <div>
+                            <label for="description">Description:</label>
+                            <input id="description" name="description" value='<%= descPlaceholder %>'>
+                            <% if (locals.errors && errors.description) {%>
+                                <p class="error-msg"><%= errors.description.msg %></p>
+                            <%}%>
+                        </div>
                     <%}%>
+        
+                    <% if (sTitle == 'item' && locals.categories && locals.categories.length > 0) {%>
+                        <div>
+                            <p>Category:</p>
+                            <% categories.forEach(category => { %>
+                                <input
+                                    id="category-<%= category.id%>"
+                                    type="checkbox"
+                                    name="category"
+                                    value="<%=category.id%>"
+                                    <% if (locals.itemCategories && itemCategories.includes(category.id)) { %>
+                                        checked
+                                    <%}%>
+                                >
+                                <label for="category-<%= category.id%>"><%= category.name %></label>
+                            <%})%>
+                            <% if (locals.errors && errors.category) {%>
+                                <p class="error-msg"><%= errors.category.msg %></p>
+                            <%}%>
+                        </div>
+                    <%}%>
+                    <% if (type.toLowerCase() == 'update') {%>
+                        <input value="<%=id%>" type="hidden" name="id">
+                    <% } %>
                 </div>
-
-                <% if (sTitle != 'person') { %>
-                    <div>
-                        <label for="description">Description:</label>
-                        <input id="description" name="description" value='<%= descPlaceholder %>'>
-                        <% if (locals.errors && errors.description) {%>
-                            <p class="error-msg"><%= errors.description.msg %></p>
-                        <%}%>
-                    </div>
-                <%}%>
-                
-                <% if (sTitle == 'item' && locals.categories && locals.categories.length > 0) {%> 
-                    <div>
-                        <p>Category:</p>
-                        <% categories.forEach(category => { %>
-                            <input
-                                id="category-<%= category.id%>"
-                                type="checkbox"
-                                name="category"
-                                value="<%=category.id%>"
-                                <% if (locals.itemCategories && itemCategories.includes(category.id)) { %>
-                                    checked
-                                <%}%>
-                            >
-                            <label for="category-<%= category.id%>"><%= category.name %></label>
-                        <%})%>
-
-                        <% if (locals.errors && errors.category) {%>
-                            <p class="error-msg"><%= errors.category.msg %></p>
-                        <%}%>
-
-                    </div>
-                <%}%>
-
-                <% if (type.toLowerCase() == 'update') {%>
-                    <input value="<%=id%>" type="hidden" name="id">
-                <% } %>
-            </div>
-            <button type="submit">submit</button>
-        </form>
-    </main>
+                <button type="submit">submit</button>
+            </form>
+        </main>
+    </div>
 </body>
 </html>

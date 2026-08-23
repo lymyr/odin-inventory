@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <link rel="stylesheet" type="text/css" href="/styles/reset.css">
+    <link rel="stylesheet" type="text/css" href="/styles/styles.css">
+    <script src="/scripts/sidebarInteractions.js" defer></script>
 </head>
 <body>
-    <%- include('partials/header') %>
-    <%- include('partials/sidebar') %>
-    <%- include('partials/errorDialog') %>
-    <main>
-        <h1><%= title %></h1>
-        <a href="<%= title.toLowerCase() %>/add"><button>Add</button></a>
-        <%- include('partials/content') %>
-    </main>
+    <div class="wrapper">
+        <%- include('partials/header') %>
+        <%- include('partials/sidebar') %>
+        <%- include('partials/errorDialog') %>
+        <main>
+            <h1><%= title %></h1>
+            <a href="<%= title.toLowerCase() %>/add"><button>Add</button></a>
+            <%- include('partials/content') %>
+        </main>
+    </div>
 </body>
 </html>
