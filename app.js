@@ -16,6 +16,10 @@ app.use('/category', categoryRouter)
 app.use('/item', itemRouter)
 app.use('/person', personRouter)
 
+app.use((req, res) => {
+    res.render('error', {title: 'Error'})
+})
+
 app.listen(process.env.PORT, 'localhost', () => {
     console.log("Listening on " + process.env.PORT)
 })
