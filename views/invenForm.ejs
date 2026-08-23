@@ -12,35 +12,52 @@
         <h1><%= title %> <%= type %></h1>
         <form method="POST" action="/inventory/<%= type.toLowerCase() %>">
             <div>
-                <label for="item">Item:</label>
-                <select name="item_id" id="item">
-                    <option value="">Select item</option>
-                    <% if (locals.items) { items.forEach(item => { %>
-                        <option 
-                            value=<%= item.id %>
-                            <% if (locals.invMatch != undefined && locals.invMatch.item_id == item.id) {%> selected <%}%> 
-                        ><%= item.name %></option>
-                    <% })} %>
-                </select>
-                <label for="quantity">Quantity:</label>
-                <input 
-                    id="quantity" 
-                    name="quantity"
-                    <%  let quantHolder = (locals.invMatch != undefined) ? invMatch.quantity : 1 %>
-                    value=<%= quantHolder %>
-                >
-                <label for="person">Owner:</label>
-                <select name="person_id" id="person">
-                     <option value="">Select person</option>
-                    <% if (locals.people) { people.forEach(person => { %>
-                        <% let selectVal = (locals.invMatch != undefined && locals.invMatch.person_id == person.id) ? 'selected' : ''%> 
-                        <option 
-                            value=<%= person.id %> 
-                            <% if (locals.invMatch != undefined && locals.invMatch.person_id== person.id) {%> selected <%}%> >
-                            <%= person.name %>
-                        </option>
-                    <% })} %>
-                </select>
+                <div>
+                    <label for="item">Item:</label>
+                    <select name="item_id" id="item">
+                        <option value="">Select item</option>
+                        <% if (locals.items) { items.forEach(item => { %>
+                            <option
+                                value=<%= item.id %>
+                                <% if (locals.invMatch != undefined && locals.invMatch.item_id == item.id) {%> selected <%}%>
+                            ><%= item.name %></option>
+                        <% })} %>
+                    </select>
+
+                    <% if (locals.errors && errors.item_id) {%>
+                        <p class="error-msg"><%= errors.item_id.msg %></p>
+                    <%}%>
+
+                </div>
+                <div>
+                    <label for="quantity">Quantity:</label>
+                    <input
+                        id="quantity"
+                        name="quantity"
+                        <%  let quantHolder = (locals.invMatch != undefined) ? invMatch.quantity : 1 %>
+                        value=<%= quantHolder %>
+                    >
+                    <% if (locals.errors && errors.quantity) {%>
+                        <p class="error-msg"><%= errors.quantity.msg %></p>
+                    <%}%>
+                </div>
+                <div>
+                    <label for="person">Owner:</label>
+                    <select name="person_id" id="person">
+                         <option value="">Select person</option>
+                        <% if (locals.people) { people.forEach(person => { %>
+                            <% let selectVal = (locals.invMatch != undefined && locals.invMatch.person_id == person.id) ? 'selected' : ''%>
+                            <option
+                                value=<%= person.id %>
+                                <% if (locals.invMatch != undefined && locals.invMatch.person_id== person.id) {%> selected <%}%> >
+                                <%= person.name %>
+                            </option>
+                        <% })} %>
+                    </select>
+                    <% if (locals.errors && errors.person_id) {%>
+                        <p class="error-msg"><%= errors.person_id.msg %></p>
+                    <%}%>
+                </div>
             </div>
 
             <% if (locals.invMatch) {%> 

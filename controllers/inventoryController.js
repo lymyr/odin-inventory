@@ -20,7 +20,7 @@ import { validateIdBody, validateIdParam } from "../validations/generalValidatio
 
 
 export async function getInventory(req, res) {
-    const inventory = await queryAll(); // todo: include DISTINCT per table
+    const inventory = await queryAll();
     res.render('index', {title: 'Inventory', dataList: inventory})
 }
 
@@ -38,8 +38,17 @@ export const addInventory = [
             await queryAdd(req.body.item_id, req.body.quantity, req.body.person_id)
             res.redirect('/')
         }
-        else
-            res.send(errs.mapped())
+        else {
+            const [items, people] = await Promise.all([getItems(), getPeople()])
+            res.status(400).render('invenForm', {
+                title: 'Inventory',
+                type: 'Add',
+                invMatch: req.body,
+                items: items,
+                people: people,
+                errors: errs.mapped()
+            })
+        }
     }
 ]
 
@@ -70,8 +79,17 @@ export const updateInventory = [
             await queryUpdate(req.body.id, req.body.item_id, req.body.quantity, req.body.person_id)
             res.redirect('/')
         }
-        else
-            res.send(errs.mapped())
+        else {
+            const [items, people] = await Promise.all([getItems(), getPeople()])
+            res.status(400).render('invenForm', {
+                title: 'Inventory',
+                type: 'Update',
+                invMatch: req.body,
+                items: items,
+                people: people,
+                errors: errs.mapped()
+            })
+        }
     }
 ]
 
@@ -85,7 +103,9 @@ export const deleteInventory = [
             await queryDelete(req.body.id)
             return res.redirect('/')
         }
-        else
-            res.send(errs.mapped())
+        else {
+            const inventory = await queryAll();
+            res.status(400).render('index', {title: 'Inventory', dataList: inventory, errors: errs.array()})
+        }
     }
 ]
