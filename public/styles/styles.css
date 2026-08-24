@@ -16,8 +16,9 @@ body {
 }
 
 .wrapper {
+    --sidebar-width: max(20vw, 250px);
     display:grid;
-    grid-template-columns: max(20vw, 250px) 2fr;
+    grid-template-columns: var(--sidebar-width) 2fr;
     grid-template-rows: 60px 1fr;
     min-height: 100vh;
 }
@@ -32,6 +33,8 @@ aside {
     grid-column: 1/2;
     grid-row: 1/3;
     color: var(--font-color);
+    position: fixed;
+    width: var(--sidebar-width);
 }
 
 main {
@@ -60,7 +63,7 @@ header button svg {
 }
 
 input, select {
-    max-width: 180px;
+    max-width: 500px;
     min-height: 2rem
 }
 
@@ -103,15 +106,18 @@ aside {
     grid-template-columns: 1fr 24px;
     color: var(--font-color);
 }
+
 aside.hide {
     display:none;
 }
+
 aside > button {
     position: relative;
     height: 100%;
     background-color: var(--aside-hover-bg-color);
     border-radius: 0;
 }
+
 aside > button:hover {
     background-color: var(--main-color-secondary) !important;
 }
@@ -206,6 +212,7 @@ tr td > form > button {
 }
 
 .id,
+.quantity,
 td:has(form > button),
 td:has(a button) {
    white-space: nowrap;
@@ -248,6 +255,7 @@ th:last-child {
 main > form {
     --gap: 12px;
     width: fit-content;
+    max-width: 500px;
     padding: 16px;
     border-radius: 4px;
     margin: auto;
@@ -331,4 +339,81 @@ dialog span {
 .cancel-dialog-btn:hover {
     background-color: rgb(206, 206, 206);
     color:black;
+}
+
+
+
+@media screen and (max-width: 620px) {
+    main > table {
+        display: flex;
+        flex-wrap: wrap;
+        background-color: transparent;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody {
+        display: grid;
+        width: 100%;
+        flex-wrap: wrap;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+        gap: 20px;
+    }
+    tbody tr {
+        display: block;
+        position: relative;
+        background-color: var(--main-color) !important;
+        height: fit-content;
+        border-radius: 4px;
+    }
+
+    td {
+        display:block;
+    }
+    
+    td:nth-last-child(1),
+    td:nth-last-child(2) {
+        display: inline-block;
+    }
+
+    td:nth-last-child(2) {
+        margin-right: 44px;
+        
+    }
+
+    .id ::before {
+        font-weight: 600;
+        content: "ID: ";
+    }
+
+    .name ::before {
+        font-weight: 600;
+        content: "Name: ";
+    }
+
+    .description ::before {
+        font-weight: 600;
+        content: "Description: ";
+    }
+
+    .quantity ::before {
+        font-weight: 600;
+        content: "Quantity: ";
+    }
+    
+    .item ::before {
+        font-weight: 600;
+        content: "Item: ";
+    }
+
+    .owner ::before {
+        font-weight: 600;
+        content: "Owner: ";
+    }
+
+    .category:not(:has(div > div)) {
+        display: none;
+    }
 }
