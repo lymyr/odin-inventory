@@ -9,10 +9,12 @@
     --btn-font-color: white;
     --btn-hover-color: rgb(62, 123, 255);
     --aside-hover-bg-color: rgb(115, 115, 115);
+
+    --bg-color: rgb(27, 28, 29);
 }
 
 body {
-    background-color: rgb(27, 28, 29);
+    background-color: var(--bg-color);
 }
 
 .wrapper {
@@ -197,6 +199,10 @@ main > div {
     gap: 12px;
     flex-wrap: wrap;
     align-items: center;
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-color);
+    padding-block: 8px;
 }
 
 main table {
