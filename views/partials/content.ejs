@@ -30,13 +30,15 @@
                             <p>
                                 Are you sure you want to delete 
                                 <% if (title.toLowerCase() == 'inventory') {%>
-                                    <%= data.item %> item of <%= data.owner %>?
+                                    <span><%= data.item %></span> item of <span><%= data.owner %></span>?
                                 <%} else {%>
-                                    <%= data.name %>
+                                    <span><%= data.name %></span>
                                 <%}%>
                             </p>
-                            <button type="button" commandFor="delete-dialog-<%= data.id %>" command="close">cancel</button>
-                            <button type="submit">yes</button>
+                            <div>
+                                <button type="button" commandFor="delete-dialog-<%= data.id %>" command="close" class="cancel-dialog-btn">cancel</button>
+                                <button type="submit">yes</button>
+                            </div>
                         </dialog>
                     </form>
                     

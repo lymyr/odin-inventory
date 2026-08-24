@@ -1,13 +1,23 @@
 /* general styles */
 :root {
     font-family: Arial, Helvetica, sans-serif;
-    --main-color: gray;
-    --font-color: rgb(0, 0, 0);
+    --main-color: rgb(64, 64, 64);
+    --main-color-secondary: rgb(133, 133, 133);
+    --font-color: rgb(234, 234, 234);
+    --font-color-secondary: white;
+    --btn-color: rgb(38, 97, 206);
+    --btn-font-color: white;
+    --btn-hover-color: rgb(62, 123, 255);
+    --aside-hover-bg-color: rgb(115, 115, 115);
+}
+
+body {
+    background-color: rgb(27, 28, 29);
 }
 
 .wrapper {
     display:grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: max(20vw, 250px) 2fr;
     grid-template-rows: 60px 1fr;
     min-height: 100vh;
 }
@@ -15,16 +25,19 @@
 header {
     grid-row: 1/2;
     grid-column: 2/3;
+    color: var(--font-color);
 }
 
 aside {
     grid-column: 1/2;
     grid-row: 1/3;
+    color: var(--font-color);
 }
 
 main {
     grid-column: 2/3;
     grid-row: 2/3;
+    color: var(--font-color);
 }
 
 .wrapper:has(aside.hide) header,
@@ -43,8 +56,7 @@ header button svg {
     --size: 24px;
     height: var(--size);
     width: var(--size);
-    /* todo: replace with svg color property in :root */
-    fill: #000000;
+    fill: var(--font-color);
 }
 
 input, select {
@@ -52,30 +64,40 @@ input, select {
     min-height: 2rem
 }
 
+button {
+    background-color: var(--btn-color);
+    color: var(--btn-font-color);
+    border: none;
+    border-radius: 4px;
+    padding: 2px 12px;
+}
+button:hover {
+    cursor: pointer;
+    background-color: var(--btn-hover-color);
+}
+
+
+
+
+
+
 /* custom styles */
 header {
     display: flex;
     align-items: center;
     gap:24px;
     background-color: var(--main-color);
-    /* padding: 6px 12px; */
-}
-
-header button {
-    height: fit-content;
+    padding-inline: 20px;
 }
 
 /* todo: replace with hover color property in :root */
 header button:hover {
-    background-color: white;
+    background-color: var(--aside-hover-bg-color);
     cursor: pointer;
 }
 
 aside {
-    --aside-block-space: 24px;
-    /* position: absolute; */
-    top: 0;
-    background-color: rgb(170, 169, 169);
+    background-color: var(--main-color);
     min-height: 100%;
     display: grid;
     grid-template-columns: 1fr 24px;
@@ -87,7 +109,11 @@ aside.hide {
 aside > button {
     position: relative;
     height: 100%;
-    border-left: 1px solid black;
+    background-color: var(--aside-hover-bg-color);
+    border-radius: 0;
+}
+aside > button:hover {
+    background-color: var(--main-color-secondary) !important;
 }
 
 aside > button svg {
@@ -97,8 +123,7 @@ aside > button svg {
 }
 
 aside > button:hover {
-    /* todo: replace with hover color property in :root */
-    background-color: rgb(123, 123, 123);
+    background-color: var(--aside-hover-bg-color);
     cursor: pointer;
 }
 
@@ -107,6 +132,7 @@ aside > div {
 }
 aside h2 {
     text-align: center;
+    margin-bottom: 24px;
 }
 aside ul,
 aside li {
@@ -114,6 +140,7 @@ aside li {
     margin: 0;
     padding: 0;
     width: 100%;
+    font-size: 1.2rem;
 }
 
 aside a {
@@ -126,7 +153,7 @@ aside li {
 }
 
 aside li:hover {
-    background-color: white;
+    background-color: var(--aside-hover-bg-color);
 }
 
 main {
@@ -135,7 +162,9 @@ main {
 
 main > form,
 main table {
-    margin-top: 24px;
+    --header-space: 24px;
+    margin-top: var(--header-space);
+    background-color: var(--main-color);
 }
 
 main > div {
@@ -146,54 +175,83 @@ main > div {
 }
 
 main table {
-    width: 100%;
-    border: 1px solid black;
+    --table-border-color: var(--main-color-secondary);
     border-collapse: collapse;
-}
-td, th {
-    border: 1px solid black;
-    padding: 4px 8px;
+    width: 100%;
 }
 
+td, th {
+    padding: 12px;
+}
+
+th {
+    background-color: rgb(110, 110, 110);
+    color: var(--font-color-secondary);
+    padding: 16px 12px;
+    font-size: 1.2rem;
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(46, 46, 46);
+}
 
 .id, .quantity {
     text-align: right;
 }
-
-tr > td:nth-last-child(1),
-tr > td:nth-last-child(2) {
-    padding: 0;
-}
-
+ 
 tr a button,
 tr td > form > button {
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    border: none;
-    background-color: transparent;
-    font-weight: bold;
-}
-tr td:has(button:hover) {
-    background-color: rgb(214, 214, 214);
+    width: fit-content;
+    font-size: 0.9rem;
 }
 
-td div:has(div) {
+.id,
+td:has(form > button),
+td:has(a button) {
+   white-space: nowrap;
+   width: 1px;
+}
+
+th:last-child {
+    max-width: calc((64px + 24px) * 2);
+    max-width: 128px;
+}
+
+tr td > form > button {
+    background-color: rgb(104, 70, 70);
+}
+
+tr td > form > button:hover {
+    background-color: rgb(161, 43, 43);
+}
+
+.category div {
     display:flex;
     gap: 2px;
     flex-wrap: wrap;
     border-collapse: collapse;
 }
 
-td div > div {
+.category div > div {
     padding: 2px 8px;
     font-size: 0.8rem;
     border-radius: 4px;
-    background-color: gray;
+    background-color: rgb(101, 101, 101);
+    color: rgb(204, 204, 204);
+    letter-spacing: -1%;
+}
+
+th:last-child {
+    max-width: 180px;
 }
 
 main > form {
     --gap: 12px;
+    width: fit-content;
+    padding: 16px;
+    border-radius: 4px;
+    margin: auto;
+    margin-top: var(--header-space);
 }
 
 form div:has(select),
@@ -208,6 +266,10 @@ form div > div > div:has(.checkbox-wrapper) {
     flex-direction: row;
     gap: 16px;
     flex-wrap: wrap;
+}
+
+.error-msg {
+    color: rgb(230, 102, 102);
 }
 
 .checkbox-wrapper {
@@ -232,6 +294,8 @@ dialog {
     border: none;
     border-radius: 4px;
     padding: 20px;
+    background-color: var(--main-color);
+    color: var(--font-color);
 }
 
 dialog::backdrop {
@@ -239,7 +303,32 @@ dialog::backdrop {
     background-color: #00000070;
 }
 
-dialog button {
+dialog > div:has(button) {
+    display: flex;
     margin-top: 12px;
-    margin-right: 12px;
+    gap: 8px;
+    justify-content: right;
+}
+
+dialog button {
+    min-width: 80px;
+}
+
+dialog span {
+    font-weight: 600;
+    background-color: rgb(105, 105, 105);
+    color: white;
+    padding: 2px;
+    margin-inline: 2px;
+    border-radius: 2px;
+}
+
+.cancel-dialog-btn {
+    background-color: rgb(101, 101, 101);
+    color:var(--font-color);
+}
+
+.cancel-dialog-btn:hover {
+    background-color: rgb(206, 206, 206);
+    color:black;
 }
