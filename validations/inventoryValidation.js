@@ -12,6 +12,7 @@ const validateInventory = [
         .isInt().withMessage('Quantity should be an integer')
         .isInt({allow_leading_zeroes: false}).withMessage('Quantity should not lead with 0s')
         .isInt({min: 1}).withMessage('Quantity should be greater than 0')
+        .isInt({max: 999}).withMessage("Quantity must be less than 1000")
         .toInt(),
     body('item_id')
         .exists({values: 'falsy'}).withMessage('please select an item')

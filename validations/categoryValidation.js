@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import generalValidation from "./generalValidation.js";
+import generalValidation, { validateNameLength } from "./generalValidation.js";
 import { 
     getCategoryById, 
     getSameNameCategory,
@@ -8,6 +8,7 @@ import {
 
 export const validateAddCategory = [
     ...generalValidation,
+    validateNameLength(30),
     body('name').custom(async value => {
         const sameName = await getSameNameCategory(value);
         if (sameName.length > 0)
@@ -17,6 +18,7 @@ export const validateAddCategory = [
 
 export const validateUpdateCategory = [
     ...generalValidation,
+    validateNameLength(30),
     body('name').custom(async (value, {req, res}) => {
         const sameName = await getSameNameUpdateCategory(req.body.id, value)
         if (sameName.length > 0)

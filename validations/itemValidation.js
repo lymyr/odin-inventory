@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import generalValidation, { validateIdBody } from "./generalValidation.js";
+import generalValidation, { validateIdBody, validateNameLength } from "./generalValidation.js";
 import { getItemByName, getItemsFilterId, getItemsInInv } from "../db/query.js";
 
 const santizeCategory = body('category').toArray()
@@ -9,6 +9,7 @@ const santizeCategory = body('category').toArray()
 
 export const itemValidation = [
     ...generalValidation,
+    validateNameLength(80),
     body('name').notEmpty().bail()
         .custom(async (name) => {
             const item = await getItemByName(name)
@@ -21,6 +22,7 @@ export const itemValidation = [
 export const itemUpdateValidation = [
     ...generalValidation,
     validateIdBody,
+    validateNameLength(80),
     body('name').notEmpty().bail()
         .custom(async (name, {req, res}) => {
             const item = await getItemsFilterId(req.body.id, name)

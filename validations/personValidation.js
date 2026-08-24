@@ -1,9 +1,10 @@
 import { body } from "express-validator";
-import generalValidation, { validateIdBody } from "./generalValidation.js";
+import generalValidation, { validateIdBody, validateNameLength } from "./generalValidation.js";
 import { getPerson, getPersonByName, getPersonByNameFilterId, getPersonInInv } from "../db/query.js";
 
 export const validatePerson = [
     ...generalValidation,
+    validateNameLength(50),
     body('name').custom(async value => {
         const person = await getPersonByName(value)
         if (person.length > 0)
