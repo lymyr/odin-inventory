@@ -26,6 +26,6 @@ app.use((err, req, res, next) => {
     res.render('error', {title: 'Error', errorDesc: err})
 })
 
-app.listen(process.env.PORT, 'localhost', () => {
+app.listen(process.env.PORT, () => {
     console.log("Listening on " + process.env.PORT)
 })
