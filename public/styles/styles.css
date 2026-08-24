@@ -442,4 +442,17 @@ dialog span {
     .category:not(:has(div > div)) {
         display: none;
     }
+
+    header,
+    main {
+        grid-column: 2/5 !important;
+    }
+    aside {
+        position: fixed;
+        z-index: 1;
+        box-shadow: var(--sidebar-btn-width) 0px 8px var(--bg-color);
+    }
+    .aside-btn {
+        z-index: 2;   
+    }
 }
