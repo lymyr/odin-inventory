@@ -16,46 +16,56 @@ body {
 }
 
 .wrapper {
-    --sidebar-width: max(20vw, 250px);
+    --sidebar-width: max(15vw, 180px);
+    --sidebar-btn-width: 30px;
     display:grid;
-    grid-template-columns: var(--sidebar-width) 2fr;
+    grid-template-columns: 
+        var(--sidebar-btn-width) 
+        var(--sidebar-width) 
+        var(--sidebar-btn-width) 
+        2fr;
     grid-template-rows: 60px 1fr;
     min-height: 100vh;
 }
 
 header {
     grid-row: 1/2;
-    grid-column: 2/3;
+    grid-column: 4/5;
     color: var(--font-color);
 }
 
 aside {
-    grid-column: 1/2;
-    grid-row: 1/3;
     color: var(--font-color);
     position: fixed;
-    width: var(--sidebar-width);
+    width: calc(var(--sidebar-width) + var(--sidebar-btn-width));
+}
+
+.aside-btn {
+    grid-column: 3/4;
+    grid-row: 1/3;
 }
 
 main {
-    grid-column: 2/3;
+    grid-column: 4/5;
     grid-row: 2/3;
     color: var(--font-color);
 }
 
 .wrapper:has(aside.hide) header,
 .wrapper:has(aside.hide) main {
-    grid-column: 1/3
+    grid-column: 2/5
 }
 
-aside button,
-header button {
+.wrapper:has(aside.hide) .aside-btn {
+    grid-column: 1/2;
+}
+
+aside button {
     background-color: transparent;
     border: none;
 }
 
-aside button svg,
-header button svg {
+aside button svg {
     --size: 24px;
     height: var(--size);
     width: var(--size);
@@ -93,17 +103,9 @@ header {
     padding-inline: 20px;
 }
 
-/* todo: replace with hover color property in :root */
-header button:hover {
-    background-color: var(--aside-hover-bg-color);
-    cursor: pointer;
-}
-
 aside {
     background-color: var(--main-color);
     min-height: 100%;
-    display: grid;
-    grid-template-columns: 1fr 24px;
     color: var(--font-color);
 }
 
@@ -111,24 +113,41 @@ aside.hide {
     display:none;
 }
 
-aside > button {
-    position: relative;
+.aside-btn {
+    position: fixed;
+    width: var(--sidebar-btn-width);
+    left: calc(var(--sidebar-btn-width) + var(--sidebar-width));
     height: 100%;
+}
+
+.wrapper:has(aside.hide) .aside-btn {
+    left: 0px;
+}
+
+.aside-btn > button {
     background-color: var(--aside-hover-bg-color);
+    height: 100%;
+    width: 100%;
     border-radius: 0;
 }
 
-aside > button:hover {
+.aside-btn > button:hover {
     background-color: var(--main-color-secondary) !important;
 }
 
-aside > button svg {
+.aside-btn > button svg {
     --size: 16px;
-    position: absolute;
-    right: 1px;
+    position: fixed;
+    left: calc((var(--sidebar-btn-width)*2) + var(--sidebar-width) - 22px);
+    top:45vh;
 }
 
-aside > button:hover {
+.wrapper:has(aside.hide) .aside-btn > button svg {
+    left: calc(var(--sidebar-btn-width) - var(--size) - 16px);
+    transform: rotateY(180deg);
+}
+
+.aside-btn > button:hover {
     background-color: var(--aside-hover-bg-color);
     cursor: pointer;
 }
